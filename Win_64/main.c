@@ -25,12 +25,20 @@ int main()
     int option = 1;
     LinkedList* listaEmpleados = ll_newLinkedList();
     do{
+        printf("\n\n1. Cargar los datos de los empleados desde el archivo data.csv (modo texto)\n2. Cargar los datos de los empleados desde el archivo data.csv (modo binario)\n3. Alta de empleado");
+        scanf("%d",&option);
         switch(option)
         {
             case 1:
                 controller_loadFromText("data.csv",listaEmpleados);
                 break;
+            case 3:
+                controller_addEmployee(listaEmpleados);
+                break;
+            default:
+
+                break;
         }
-    }while(option != 1);
+    }while(option != 4);
     return 0;
 }

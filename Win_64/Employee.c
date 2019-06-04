@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include "Employee.h"
 
 Employee* employee_new()
@@ -96,4 +97,70 @@ int employee_getSueldo(Employee* this,int* sueldo)
         *sueldo=this->sueldo;
     }
     return 0;
+}
+int employee_IngresarDatos(Employee* this,int opcion,char* mensaje)
+{
+    char ingreso[50];
+
+    puts(mensaje);
+    fflush(stdin);
+    switch(opcion)
+    {
+    case 1:
+        scanf("%s",ingreso);
+        while(employee_checkStr(ingreso)==0)
+        {
+            printf("ERROR:");
+            scanf("%s",ingreso);
+        }
+        employee_setId(this,atoi(ingreso));
+        break;
+    case 2:
+        scanf("%s",ingreso);
+
+        employee_setNombre(this, ingreso);
+        break;
+    case 3:
+        scanf("%s",ingreso);
+        while(employee_checkStr(ingreso)==0)
+        {
+            printf("ERROR:");
+            scanf("%s",ingreso);
+        }
+        employee_setHorasTrabajadas(this,atoi(ingreso));
+        break;
+    case 4:
+        scanf("%s",ingreso);
+        while(employee_checkStr(ingreso)==0)
+        {
+            printf("ERROR:");
+            scanf("%s",ingreso);
+        }
+        employee_setSueldo(this,atoi(ingreso));
+        break;
+    }
+    return 0;
+}
+int employee_checkStr(char* ingreso)
+{
+    int i;
+    int flag=1;
+    for(i=0;i<50;i++)
+    {
+        if(ingreso[i]=='\0')
+        {
+
+            break;
+
+        }else{
+            if(isdigit(ingreso[i])==0)
+            {
+                printf("%d",flag);
+                flag=isdigit(ingreso[i]);
+                break;
+            }
+        }
+
+    }
+    return flag;
 }

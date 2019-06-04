@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include "LinkedList.h"
 #include "Employee.h"
-
+#include "parser.h"
 
 /** \brief Carga los datos de los empleados desde el archivo data.csv (modo texto).
  *
@@ -14,6 +14,7 @@
 int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
 {
     parser_EmployeeFromText(path , pArrayListEmployee);
+
     return 1;
 }
 
@@ -38,6 +39,16 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
  */
 int controller_addEmployee(LinkedList* pArrayListEmployee)
 {
+    Employee* empleado=employee_new();
+
+    printf("\n\nCrear empleado");
+
+    employee_IngresarDatos(empleado,1,"\nIngrese ID:");
+    employee_IngresarDatos(empleado,2,"\nIngrese nombre:");
+    employee_IngresarDatos(empleado,3,"\nIngrese Horas trabajadas:");
+    employee_IngresarDatos(empleado,4,"\nIngrese salario:");
+
+    ll_add(pArrayListEmployee,empleado);
     return 1;
 }
 
