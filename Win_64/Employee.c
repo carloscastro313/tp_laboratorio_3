@@ -3,6 +3,7 @@
 #include <string.h>
 #include <ctype.h>
 #include "Employee.h"
+#include "LinkedList.h"
 
 Employee* employee_new()
 {
@@ -27,7 +28,11 @@ Employee* employee_newParametros(char* idStr,char* nombreStr,char* horasTrabajad
     return list;
 }
 
-void employee_delete();
+void employee_delete(Employee* this)
+{
+    free(this);
+
+}
 
 int employee_setId(Employee* this,int id)
 {
@@ -106,7 +111,7 @@ int employee_IngresarDatos(Employee* this,int opcion,char* mensaje)
     fflush(stdin);
     switch(opcion)
     {
-    case 1:
+    case 0:
         scanf("%s",ingreso);
         while(employee_checkStr(ingreso)==0)
         {
@@ -115,12 +120,12 @@ int employee_IngresarDatos(Employee* this,int opcion,char* mensaje)
         }
         employee_setId(this,atoi(ingreso));
         break;
-    case 2:
+    case 1:
         scanf("%s",ingreso);
 
         employee_setNombre(this, ingreso);
         break;
-    case 3:
+    case 2:
         scanf("%s",ingreso);
         while(employee_checkStr(ingreso)==0)
         {
@@ -129,7 +134,7 @@ int employee_IngresarDatos(Employee* this,int opcion,char* mensaje)
         }
         employee_setHorasTrabajadas(this,atoi(ingreso));
         break;
-    case 4:
+    case 3:
         scanf("%s",ingreso);
         while(employee_checkStr(ingreso)==0)
         {
@@ -137,6 +142,11 @@ int employee_IngresarDatos(Employee* this,int opcion,char* mensaje)
             scanf("%s",ingreso);
         }
         employee_setSueldo(this,atoi(ingreso));
+        break;
+    default:
+        printf("\n\nError modificacion\n");
+        system("pause");
+
         break;
     }
     return 0;
@@ -163,4 +173,39 @@ int employee_checkStr(char* ingreso)
 
     }
     return flag;
+}
+
+int employee_chooseMod(Employee* this, char* mensaje)
+{
+    char mensajeMod[3][30]={"\nIngrese nombre:","\nIngrese Horas trabajadas:","\nIngrese salario:"};
+    int opcion;
+
+    puts(mensaje);
+    scanf("%d",&opcion);
+
+    system("cls");
+    if(opcion>0&&opcion<3)
+    {
+        employee_IngresarDatos(this,opcion,mensajeMod[opcion-1]);
+    }else
+    {
+        employee_IngresarDatos(this,-1," ");
+    }
+
+
+    return 1;
+}
+
+int employee_list(Employee* this)
+{
+    printf("%5d %20s %10d        %10d\n",this->id,this->nombre,this->sueldo,this->horasTrabajadas);
+
+    return 1;
+}
+
+int employee_compareByName(void *e1, void *e2)
+{
+    Employee* aux1=e1;
+    Employee* aux2=e2;
+    return strcmp(aux1->nombre,aux2->nombre);
 }

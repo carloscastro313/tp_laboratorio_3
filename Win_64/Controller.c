@@ -27,6 +27,7 @@ int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
  */
 int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
 {
+    parser_EmployeeFromBinary(path ,pArrayListEmployee);
     return 1;
 }
 
@@ -43,12 +44,14 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
 
     printf("\n\nCrear empleado");
 
-    employee_IngresarDatos(empleado,1,"\nIngrese ID:");
-    employee_IngresarDatos(empleado,2,"\nIngrese nombre:");
-    employee_IngresarDatos(empleado,3,"\nIngrese Horas trabajadas:");
-    employee_IngresarDatos(empleado,4,"\nIngrese salario:");
+    employee_IngresarDatos(empleado,0,"\nIngrese ID:");
+    employee_IngresarDatos(empleado,1,"\nIngrese nombre:");
+    employee_IngresarDatos(empleado,2,"\nIngrese Horas trabajadas:");
+    employee_IngresarDatos(empleado,3,"\nIngrese salario:");
 
     ll_add(pArrayListEmployee,empleado);
+
+    system("pause");
     return 1;
 }
 
@@ -61,6 +64,46 @@ int controller_addEmployee(LinkedList* pArrayListEmployee)
  */
 int controller_editEmployee(LinkedList* pArrayListEmployee)
 {
+    int i;
+    int id;
+    int auxId;
+    int flag=0;
+    Employee* aux;
+
+
+    for(i=0;i<ll_len(pArrayListEmployee);i++)
+    {
+        aux= (Employee*)  ll_get(pArrayListEmployee, i);
+        employee_list(aux);
+
+    }
+
+    printf("Ingrese id: ");
+    scanf("%d",&id);
+
+    for(i=0;i<ll_len(pArrayListEmployee);i++)
+    {
+        aux=(Employee*) ll_get(pArrayListEmployee,i);
+        employee_getId(aux, &auxId);
+        if(id==auxId)
+        {
+            flag=1;
+            break;
+        }
+
+    }
+    system("cls");
+    if(flag==1)
+    {
+        employee_chooseMod(aux, "\n\nModificar empleado\n\n1.Nombre\n2.Horas trabajadas\n3.Salario\n\nSelecion: ");
+        ll_set(pArrayListEmployee,i,(Employee*)aux);
+    }else
+    {
+        printf("No existe id");
+        system("pause");
+    }
+
+
     return 1;
 }
 
@@ -73,6 +116,43 @@ int controller_editEmployee(LinkedList* pArrayListEmployee)
  */
 int controller_removeEmployee(LinkedList* pArrayListEmployee)
 {
+    int i;
+    int id;
+    int auxId;
+    int flag=0;
+    Employee* aux;
+
+
+    for(i=0;i<ll_len(pArrayListEmployee);i++)
+    {
+        aux= (Employee*)  ll_get(pArrayListEmployee, i);
+        employee_list(aux);
+
+    }
+
+    printf("Ingrese id: ");
+    scanf("%d",&id);
+
+    for(i=0;i<ll_len(pArrayListEmployee);i++)
+    {
+        aux=(Employee*) ll_get(pArrayListEmployee,i);
+        employee_getId(aux, &auxId);
+        if(id==auxId)
+        {
+            employee_delete(aux);
+            ll_remove(pArrayListEmployee, i);
+            flag=1;
+            break;
+        }
+
+    }
+    if(flag==0)
+    {
+        printf("No existe id");
+        system("pause");
+    }
+
+
     return 1;
 }
 
@@ -85,6 +165,20 @@ int controller_removeEmployee(LinkedList* pArrayListEmployee)
  */
 int controller_ListEmployee(LinkedList* pArrayListEmployee)
 {
+    int i;
+    Employee* aux;
+
+    printf("\n\nLista de empleados\n");
+    printf("id   |Nombre              |sueldo     |horas trabajadas\n");
+    for(i=0;i<ll_len(pArrayListEmployee);i++)
+    {
+        aux= (Employee*)  ll_get(pArrayListEmployee, i);
+        employee_list(aux);
+
+    }
+
+    system("pause");
+
     return 1;
 }
 
@@ -97,6 +191,29 @@ int controller_ListEmployee(LinkedList* pArrayListEmployee)
  */
 int controller_sortEmployee(LinkedList* pArrayListEmployee)
 {
+    int order;
+
+    printf("\n\nOrdenar caracteres\n");
+    printf("1.A-Z\n2.Z-A\nSeleccion");
+    scanf("%d",&order);
+
+    if(order==1)
+    {
+        ll_sort(pArrayListEmployee, employee_compareByName, 1);
+
+    }else
+    {
+        if(order==2)
+        {
+            ll_sort(pArrayListEmployee, employee_compareByName, 0);
+
+        }else
+        {
+            printf("\nInvalido...\n");
+            system("pause");
+        }
+    }
+
     return 1;
 }
 
@@ -109,6 +226,30 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
  */
 int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
 {
+    int i;
+    int auxS;
+    int auxId;
+    int auxH;
+    char auxN[50];
+    Employee* aux;
+    FILE* pData;
+
+    pData=fopen(path,"w");
+
+    for(i=0;i<ll_len(pArrayListEmployee);i++)
+    {
+        aux= (Employee*)  ll_get(pArrayListEmployee, i);
+
+        employee_getId(aux, &auxId);
+        employee_getSueldo(aux, &auxS);
+        employee_getHorasTrabajadas(aux, &auxH);
+        employee_getNombre(aux, auxN);
+
+        fprintf(pData,"%d,%s,%d,%d\n",auxId,auxN,auxH,auxS);
+    }
+
+    fclose(pData);
+
     return 1;
 }
 
@@ -121,6 +262,30 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
  */
 int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
 {
+    int i;
+    int auxS;
+    int auxId;
+    int auxH;
+    char auxN[50];
+    Employee* aux;
+    FILE* pData;
+
+    pData=fopen(path,"wb");
+
+    for(i=0;i<ll_len(pArrayListEmployee);i++)
+    {
+        aux= (Employee*)  ll_get(pArrayListEmployee, i);
+
+        employee_getId(aux, &auxId);
+        employee_getSueldo(aux, &auxS);
+        employee_getHorasTrabajadas(aux, &auxH);
+        employee_getNombre(aux, auxN);
+
+        fprintf(pData,"%d,%s,%d,%d\n",auxId,auxN,auxH,auxS);
+    }
+
+    fclose(pData);
+
     return 1;
 }
 

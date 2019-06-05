@@ -13,43 +13,42 @@
 int parser_EmployeeFromText(char* pFile , LinkedList* pArrayListEmployee)
 {
     int r;
-    int i;
+    //int i;
     char auxP[50];
     char auxI[10];
     char auxS[10];
     char auxH[5];
     Employee* aux;
-    Employee* auxA;
+
     FILE* data;
-    data=fopen("data.csv","r");
-
-    fscanf(data,"%[^,],%[^,],%[^,],%[^\n]",auxI,auxP,auxH,auxS);
-    //printf("%s %s %s %s",auxI,auxP,auxH,auxS);
-
-
-
-    do
+    data=fopen(pFile,"r");
+    if(data!=NULL)
     {
-        r=fscanf(data,"%[^,],%[^,],%[^,],%[^\n]",auxI,auxP,auxH,auxS);
+        fscanf(data,"%[^,],%[^,],%[^,],%[^\n]",auxI,auxP,auxH,auxS);
+        //printf("%s %s %s %s",auxI,auxP,auxH,auxS);
 
-        if(r==4)
+
+
+        do
         {
-            aux=employee_newParametros(auxI,auxP,auxH,auxS);
-            ll_add(pArrayListEmployee, aux);
+            r=fscanf(data,"%[^,],%[^,],%[^,],%[^\n]",auxI,auxP,auxH,auxS);
 
-            printf("\n%d",ll_len(pArrayListEmployee));
-        }
+            if(r==4)
+            {
+                aux=employee_newParametros(auxI,auxP,auxH,auxS);
+                ll_add(pArrayListEmployee, aux);
 
-    }while(!feof(data));
-    fclose(data);
-    for(i=0;i<ll_len(pArrayListEmployee);i++)
+                printf("\n%d",ll_len(pArrayListEmployee));
+            }
+
+        }while(!feof(data));
+        fclose(data);
+    }else
     {
-
-
-        auxA= (Employee*)  ll_get(pArrayListEmployee, i);
-
-        printf("%d--%s--%d--%d\n",auxA->id,auxA->nombre,auxA->sueldo,auxA->horasTrabajadas);
+        printf("\n\nError archivo dato.csv");
+        system("pause");
     }
+
     return 1;
 }
 
@@ -60,44 +59,43 @@ int parser_EmployeeFromText(char* pFile , LinkedList* pArrayListEmployee)
  * \return int
  *
  */
-int parser_EmployeeFromBinary(FILE* pFile , LinkedList* pArrayListEmployee)
+int parser_EmployeeFromBinary(char* pFile , LinkedList* pArrayListEmployee)
 {
     int r;
-    int i;
     char auxP[50];
     char auxI[10];
     char auxS[10];
     char auxH[5];
     Employee* aux;
     FILE* data;
-    data=fopen("data.csv","rb");
-
-    fscanf(data,"%[^,],%[^,],%[^,],%[^\n]",auxI,auxP,auxH,auxS);
-    //printf("%s %s %s %s",auxI,auxP,auxH,auxS);
-
-
-
-    do
+    data=fopen(pFile,"rb");
+    if(data!=NULL)
     {
-        r=fscanf(data,"%[^,],%[^,],%[^,],%[^\n]",auxI,auxP,auxH,auxS);
+        fscanf(data,"%[^,],%[^,],%[^,],%[^\n]",auxI,auxP,auxH,auxS);
+        //printf("%s %s %s %s",auxI,auxP,auxH,auxS);
 
-        if(r==4)
+
+
+        do
         {
-            aux=employee_newParametros(auxI,auxP,auxH,auxS);
-            ll_add(pArrayListEmployee, aux);
+            r=fscanf(data,"%[^,],%[^,],%[^,],%[^\n]",auxI,auxP,auxH,auxS);
 
-            printf("%d",ll_len(pArrayListEmployee));
-        }
+            if(r==4)
+            {
+                aux=employee_newParametros(auxI,auxP,auxH,auxS);
+                ll_add(pArrayListEmployee, aux);
 
-    }while(!feof(data));
-    fclose(data);
-    for(i=0;i<ll_len(pArrayListEmployee);i++)
+                printf("\n%d",ll_len(pArrayListEmployee));
+            }
+
+        }while(!feof(data));
+        fclose(data);
+
+    }else
     {
-
-
-        aux= (Employee*)  ll_get(pArrayListEmployee, i);
-
-        printf("%d--%s--%d--%d\n",aux->id,aux->nombre,aux->sueldo,aux->horasTrabajadas);
+        printf("\n\nError archivo dato.csv\n");
+        system("pause");
     }
+
     return 1;
 }

@@ -10,7 +10,7 @@ typedef struct
 
 Employee* employee_new();
 Employee* employee_newParametros(char* idStr,char* nombreStr,char* horasTrabajadasStr,char* salarioStr);
-void employee_delete();
+void employee_delete(Employee* this);
 
 int employee_setId(Employee* this,int id);
 int employee_getId(Employee* this,int* id);
@@ -26,5 +26,11 @@ int employee_getSueldo(Employee* this,int* sueldo);
 
 int employee_IngresarDatos(Employee* this,int opcion,char* mensaje);
 int employee_checkStr(char* ingreso);
+
+int employee_chooseMod(Employee* this, char* mensaje);
+
+int employee_list(Employee* this );
+
+int employee_compareByName(void*, void*);
 
 #endif // employee_H_INCLUDED
