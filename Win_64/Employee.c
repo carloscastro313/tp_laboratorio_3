@@ -103,6 +103,7 @@ int employee_getSueldo(Employee* this,int* sueldo)
     }
     return 0;
 }
+
 int employee_IngresarDatos(Employee* this,int opcion,char* mensaje)
 {
     char ingreso[50];
@@ -111,15 +112,6 @@ int employee_IngresarDatos(Employee* this,int opcion,char* mensaje)
     fflush(stdin);
     switch(opcion)
     {
-    case 0:
-        scanf("%s",ingreso);
-        while(employee_checkStr(ingreso)==0)
-        {
-            printf("ERROR:");
-            scanf("%s",ingreso);
-        }
-        employee_setId(this,atoi(ingreso));
-        break;
     case 1:
         scanf("%s",ingreso);
 

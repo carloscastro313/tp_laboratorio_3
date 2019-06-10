@@ -41,17 +41,32 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
 int controller_addEmployee(LinkedList* pArrayListEmployee)
 {
     Employee* empleado=employee_new();
+    Employee* pAux;
+    int aux;
+    int id=0;
+    int i;
 
-    printf("\n\nCrear empleado");
 
-    employee_IngresarDatos(empleado,0,"\nIngrese ID:");
+    printf("\n\nCrear empleado\n");
+    for(i=0;i<ll_len(pArrayListEmployee);i++)
+    {
+        pAux=(Employee*) ll_get(pArrayListEmployee,i);
+        employee_getId(pAux,&aux);
+
+        if(aux>=id)
+        {
+            id=aux+1;
+            printf("\n%d",id);
+        }
+    }
+
+    employee_setId(empleado, id);
     employee_IngresarDatos(empleado,1,"\nIngrese nombre:");
     employee_IngresarDatos(empleado,2,"\nIngrese Horas trabajadas:");
     employee_IngresarDatos(empleado,3,"\nIngrese salario:");
 
     ll_add(pArrayListEmployee,empleado);
 
-    system("pause");
     return 1;
 }
 

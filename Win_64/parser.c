@@ -24,10 +24,6 @@ int parser_EmployeeFromText(char* pFile , LinkedList* pArrayListEmployee)
     data=fopen(pFile,"r");
     if(data!=NULL)
     {
-        fscanf(data,"%[^,],%[^,],%[^,],%[^\n]",auxI,auxP,auxH,auxS);
-        //printf("%s %s %s %s",auxI,auxP,auxH,auxS);
-
-
 
         do
         {
@@ -38,11 +34,16 @@ int parser_EmployeeFromText(char* pFile , LinkedList* pArrayListEmployee)
                 aux=employee_newParametros(auxI,auxP,auxH,auxS);
                 ll_add(pArrayListEmployee, aux);
 
-                printf("\n%d",ll_len(pArrayListEmployee));
+
             }
 
         }while(!feof(data));
         fclose(data);
+
+        printf("\n\nOK¡¡¡\n");
+        printf("Cantidad de datos cargados: %d\n",ll_len(pArrayListEmployee));
+        system("pause");
+
     }else
     {
         printf("\n\nError archivo dato.csv");
@@ -71,11 +72,6 @@ int parser_EmployeeFromBinary(char* pFile , LinkedList* pArrayListEmployee)
     data=fopen(pFile,"rb");
     if(data!=NULL)
     {
-        fscanf(data,"%[^,],%[^,],%[^,],%[^\n]",auxI,auxP,auxH,auxS);
-        //printf("%s %s %s %s",auxI,auxP,auxH,auxS);
-
-
-
         do
         {
             r=fscanf(data,"%[^,],%[^,],%[^,],%[^\n]",auxI,auxP,auxH,auxS);
@@ -85,11 +81,14 @@ int parser_EmployeeFromBinary(char* pFile , LinkedList* pArrayListEmployee)
                 aux=employee_newParametros(auxI,auxP,auxH,auxS);
                 ll_add(pArrayListEmployee, aux);
 
-                printf("\n%d",ll_len(pArrayListEmployee));
             }
 
         }while(!feof(data));
         fclose(data);
+
+        printf("\n\nOK¡¡¡\n");
+        printf("Cantidad de datos cargados: %d\n",ll_len(pArrayListEmployee));
+        system("pause");
 
     }else
     {
