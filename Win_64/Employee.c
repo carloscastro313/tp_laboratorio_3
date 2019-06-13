@@ -106,7 +106,7 @@ int employee_getSueldo(Employee* this,int* sueldo)
 
 int employee_IngresarDatos(Employee* this,int opcion,char* mensaje)
 {
-    char ingreso[50];
+    char ingreso[128];
 
     puts(mensaje);
     fflush(stdin);
@@ -115,7 +115,10 @@ int employee_IngresarDatos(Employee* this,int opcion,char* mensaje)
     case 1:
         scanf("%s",ingreso);
 
+        ingreso[0]=toupper(ingreso[0]);
+
         employee_setNombre(this, ingreso);
+
         break;
     case 2:
         scanf("%s",ingreso);
@@ -143,11 +146,16 @@ int employee_IngresarDatos(Employee* this,int opcion,char* mensaje)
     }
     return 0;
 }
+
+
+
 int employee_checkStr(char* ingreso)
 {
     int i;
     int flag=1;
-    for(i=0;i<50;i++)
+    int len;
+    len=strlen(ingreso);
+    for(i=0;i<len;i++)
     {
         if(ingreso[i]=='\0')
         {
@@ -157,7 +165,7 @@ int employee_checkStr(char* ingreso)
         }else{
             if(isdigit(ingreso[i])==0)
             {
-                printf("%d",flag);
+                //printf("%d",flag);
                 flag=isdigit(ingreso[i]);
                 break;
             }

@@ -23,7 +23,7 @@
 int main()
 {
     int option = 1;
-
+    int id=0;
     LinkedList* listaEmpleados = ll_newLinkedList();
     do{
         printf("\n\n1. Cargar los datos de los empleados desde el archivo data.csv (modo texto)\n2. Cargar los datos de los empleados desde el archivo data.csv (modo binario)\n3. Alta de empleado\n4. Modificar datos de empleado\n5. Baja de empleado\n6. Listar empleados\n7. Ordenar empleados\n8. Guardar los datos de los empleados en el archivo data.csv (modo texto).\n9. Guardar los datos de los empleados en el archivo data.csv (modo binario).\n10. Salir\nSelecion:");
@@ -32,13 +32,13 @@ int main()
         switch(option)
         {
             case 1:
-                controller_loadFromText("data.csv",listaEmpleados);
+                controller_loadFromText("data.csv","lenIdText.dat",listaEmpleados,&id);
                 break;
             case 2:
-                controller_loadFromBinary("data.dat",listaEmpleados);
+                controller_loadFromBinary("data.dat","lenIdBin.dat",listaEmpleados,&id);
                 break;
             case 3:
-                controller_addEmployee(listaEmpleados);
+                controller_addEmployee(listaEmpleados,&id);
                 break;
             case 4:
                 controller_editEmployee(listaEmpleados);
@@ -53,10 +53,10 @@ int main()
                 controller_sortEmployee(listaEmpleados);
                 break;
             case 8:
-                controller_saveAsText("data.csv",listaEmpleados);
+                controller_saveAsText("data.csv","lenIdText.dat",listaEmpleados,&id);
                 break;
             case 9:
-                controller_saveAsBinary("data.dat",listaEmpleados);
+                controller_saveAsBinary("data.dat","lenIdBin.dat",listaEmpleados,&id);
                 break;
             default:
 

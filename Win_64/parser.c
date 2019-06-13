@@ -2,18 +2,19 @@
 #include <stdlib.h>
 #include "LinkedList.h"
 #include "Employee.h"
-
+#include "parser.h"
 /** \brief Parsea los datos los datos de los empleados desde el archivo data.csv (modo texto).
  *
  * \param path char*
+ * \param path char*
  * \param pArrayListEmployee LinkedList*
+ * \param idMax int*
  * \return int
  *
  */
-int parser_EmployeeFromText(char* pFile , LinkedList* pArrayListEmployee)
+int parser_EmployeeFromText(char* pFile ,char* pFileLen ,LinkedList* pArrayListEmployee ,int* idMax)
 {
     int r;
-    //int i;
     char auxP[50];
     char auxI[10];
     char auxS[10];
@@ -21,8 +22,12 @@ int parser_EmployeeFromText(char* pFile , LinkedList* pArrayListEmployee)
     Employee* aux;
 
     FILE* data;
+
     data=fopen(pFile,"r");
-    if(data!=NULL)
+
+    r=parser_maxId(pFileLen ,idMax);
+
+    if(data!=NULL&&r!=0)
     {
 
         do
@@ -60,7 +65,7 @@ int parser_EmployeeFromText(char* pFile , LinkedList* pArrayListEmployee)
  * \return int
  *
  */
-int parser_EmployeeFromBinary(char* pFile , LinkedList* pArrayListEmployee)
+int parser_EmployeeFromBinary(char* pFile ,char* pFileLen ,LinkedList* pArrayListEmployee ,int* idMax)
 {
     int r;
     char auxP[50];
@@ -69,9 +74,14 @@ int parser_EmployeeFromBinary(char* pFile , LinkedList* pArrayListEmployee)
     char auxH[5];
     Employee* aux;
     FILE* data;
+
     data=fopen(pFile,"rb");
-    if(data!=NULL)
+
+    r=parser_maxId(pFileLen ,idMax);
+
+    if(data!=NULL&&r!=0)
     {
+
         do
         {
             r=fscanf(data,"%[^,],%[^,],%[^,],%[^\n]",auxI,auxP,auxH,auxS);
@@ -97,4 +107,24 @@ int parser_EmployeeFromBinary(char* pFile , LinkedList* pArrayListEmployee)
     }
 
     return 1;
+}
+
+int parser_maxId(char* pFileLen ,int* idMax)
+{
+    int flag=0;
+    //char aux[10000];
+    FILE* data;
+
+    data=fopen(pFileLen,"rb");
+
+    if(data!=NULL)
+    {
+        fscanf(data,"%d",idMax);
+        //*idMax=atoi(aux);
+        flag=1;
+
+    }
+    fclose(data);
+
+    return flag;
 }

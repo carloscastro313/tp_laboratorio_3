@@ -11,9 +11,9 @@
  * \return int
  *
  */
-int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
+int controller_loadFromText(char* path ,char* pathId ,LinkedList* pArrayListEmployee ,int* idMax)
 {
-    parser_EmployeeFromText(path , pArrayListEmployee);
+    parser_EmployeeFromText(path ,pathId, pArrayListEmployee, idMax);
 
     return 1;
 }
@@ -25,9 +25,9 @@ int controller_loadFromText(char* path , LinkedList* pArrayListEmployee)
  * \return int
  *
  */
-int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
+int controller_loadFromBinary(char* path ,char* pathId ,LinkedList* pArrayListEmployee ,int* idMax)
 {
-    parser_EmployeeFromBinary(path ,pArrayListEmployee);
+    parser_EmployeeFromBinary(path ,pathId, pArrayListEmployee, idMax);
     return 1;
 }
 
@@ -38,29 +38,16 @@ int controller_loadFromBinary(char* path , LinkedList* pArrayListEmployee)
  * \return int
  *
  */
-int controller_addEmployee(LinkedList* pArrayListEmployee)
+int controller_addEmployee(LinkedList* pArrayListEmployee ,int* idMax)
 {
     Employee* empleado=employee_new();
-    Employee* pAux;
-    int aux;
-    int id=0;
-    int i;
 
 
     printf("\n\nCrear empleado\n");
-    for(i=0;i<ll_len(pArrayListEmployee);i++)
-    {
-        pAux=(Employee*) ll_get(pArrayListEmployee,i);
-        employee_getId(pAux,&aux);
 
-        if(aux>=id)
-        {
-            id=aux+1;
-            printf("\n%d",id);
-        }
-    }
-
-    employee_setId(empleado, id);
+    *idMax= *idMax+1;
+    printf("%d",*idMax);
+    employee_setId(empleado, *idMax);
     employee_IngresarDatos(empleado,1,"\nIngrese nombre:");
     employee_IngresarDatos(empleado,2,"\nIngrese Horas trabajadas:");
     employee_IngresarDatos(empleado,3,"\nIngrese salario:");
@@ -235,11 +222,13 @@ int controller_sortEmployee(LinkedList* pArrayListEmployee)
 /** \brief Guarda los datos de los empleados en el archivo data.csv (modo texto).
  *
  * \param path char*
+ * \param path char*
  * \param pArrayListEmployee LinkedList*
+ * \param idMax int*
  * \return int
  *
  */
-int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
+int controller_saveAsText(char* path,char* pathIdMax, LinkedList* pArrayListEmployee ,int* idMax)
 {
     int i;
     int auxS;
@@ -248,34 +237,51 @@ int controller_saveAsText(char* path , LinkedList* pArrayListEmployee)
     char auxN[50];
     Employee* aux;
     FILE* pData;
+    FILE* pIdMax;
 
     pData=fopen(path,"w");
+    pIdMax=fopen(pathIdMax,"wb");
 
-    for(i=0;i<ll_len(pArrayListEmployee);i++)
+    if(pIdMax!=NULL&&pData!=NULL)
     {
-        aux= (Employee*)  ll_get(pArrayListEmployee, i);
 
-        employee_getId(aux, &auxId);
-        employee_getSueldo(aux, &auxS);
-        employee_getHorasTrabajadas(aux, &auxH);
-        employee_getNombre(aux, auxN);
+        fprintf(pIdMax,"%d",*idMax);
+        for(i=0;i<ll_len(pArrayListEmployee);i++)
+        {
+            aux= (Employee*)  ll_get(pArrayListEmployee, i);
 
-        fprintf(pData,"%d,%s,%d,%d\n",auxId,auxN,auxH,auxS);
+            employee_getId(aux, &auxId);
+            employee_getSueldo(aux, &auxS);
+            employee_getHorasTrabajadas(aux, &auxH);
+            employee_getNombre(aux, auxN);
+
+            fprintf(pData,"%d,%s,%d,%d\n",auxId,auxN,auxH,auxS);
+        }
+
+        fclose(pData);
+        fclose(pIdMax);
+
+    }else
+    {
+        printf("\n\nERROR MEMORIA\n");
+
+        system("pause");
     }
 
-    fclose(pData);
 
     return 1;
 }
 
-/** \brief Guarda los datos de los empleados en el archivo data.csv (modo binario).
+/** \brief Guarda los datos de los empleados en el archivo data.csv (modo texto).
  *
  * \param path char*
+ * \param path char*
  * \param pArrayListEmployee LinkedList*
+ * \param idMax int*
  * \return int
  *
  */
-int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
+int controller_saveAsBinary(char* path,char* pathIdMax, LinkedList* pArrayListEmployee ,int* idMax)
 {
     int i;
     int auxS;
@@ -284,22 +290,36 @@ int controller_saveAsBinary(char* path , LinkedList* pArrayListEmployee)
     char auxN[50];
     Employee* aux;
     FILE* pData;
+    FILE* pIdMax;
 
+    pIdMax=fopen(pathIdMax,"wb");
     pData=fopen(path,"wb");
 
-    for(i=0;i<ll_len(pArrayListEmployee);i++)
+    if(pIdMax!=NULL&&pData!=NULL)
     {
-        aux= (Employee*)  ll_get(pArrayListEmployee, i);
 
-        employee_getId(aux, &auxId);
-        employee_getSueldo(aux, &auxS);
-        employee_getHorasTrabajadas(aux, &auxH);
-        employee_getNombre(aux, auxN);
+        fprintf(pIdMax,"%d",*idMax);
+        for(i=0;i<ll_len(pArrayListEmployee);i++)
+        {
+            aux= (Employee*)  ll_get(pArrayListEmployee, i);
 
-        fprintf(pData,"%d,%s,%d,%d\n",auxId,auxN,auxH,auxS);
+            employee_getId(aux, &auxId);
+            employee_getSueldo(aux, &auxS);
+            employee_getHorasTrabajadas(aux, &auxH);
+            employee_getNombre(aux, auxN);
+
+            fprintf(pData,"%d,%s,%d,%d\n",auxId,auxN,auxH,auxS);
+        }
+
+        fclose(pData);
+        fclose(pIdMax);
+
+    }else
+    {
+        printf("\n\nERROR MEMORIA\n");
+
+        system("pause");
     }
-
-    fclose(pData);
 
     return 1;
 }
