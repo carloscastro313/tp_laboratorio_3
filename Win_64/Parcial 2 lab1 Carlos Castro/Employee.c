@@ -1,0 +1,318 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
+#include "Employee.h"
+#include "LinkedList.h"
+#define SUELDO 300
+
+Employee* employee_new()
+{
+   Employee* empleado= (Employee*) malloc(sizeof(Employee));
+
+   return empleado;
+}
+
+Employee* employee_newParametros(char* idStr,char* nombreStr,char* empleoStr,char* horasTrabajadasStr,char* sueldoStr)
+{
+
+    int id=atoi(idStr);
+    int horasTrabajada=atoi(horasTrabajadasStr);
+    int sueldo=atoi(sueldoStr);
+    Employee* list=employee_new();
+
+    employee_setId(list,id);
+    employee_setNombre(list, nombreStr);
+    employee_setEmpleo(list, empleoStr);
+    employee_setEdad(list,sueldo);
+    employee_setHorasTrabajadas(list,horasTrabajada);
+
+
+    return list;
+}
+
+void employee_delete(Employee* this)
+{
+    free(this);
+
+}
+
+int employee_setId(Employee* this,int id)
+{
+    if(this!=NULL)
+    {
+        this->id=id;
+    }
+    return 0;
+}
+int employee_getId(Employee* this,int* id)
+{
+    if(this!=NULL)
+    {
+        *id=this->id;
+    }
+    return 0;
+}
+
+int employee_setNombre(Employee* this,char* nombre)
+{
+    if(this!=NULL)
+    {
+        strcpy(this->nombre,nombre);
+    }
+    return 0;
+}
+int employee_getNombre(Employee* this,char* nombre)
+{
+    if(this!=NULL)
+    {
+        strcpy(nombre,this->nombre);
+    }
+    return 0;
+}
+
+int employee_setEmpleo(Employee* this,char* empleo)
+{
+    if(this!=NULL)
+    {
+        strcpy(this->empleo,empleo);
+    }
+    return 0;
+}
+int employee_getEmpleo(Employee* this,char* empleo)
+{
+    if(this!=NULL)
+    {
+        strcpy(empleo,this->empleo);
+    }
+    return 0;
+}
+
+int employee_setHorasTrabajadas(Employee* this,int horasTrabajadas)
+{
+    if(this!=NULL)
+    {
+        this->horasTrabajadas=horasTrabajadas;
+    }
+    return 0;
+}
+
+int employee_getHorasTrabajadas(Employee* this,int* horasTrabajadas)
+{
+    if(this!=NULL)
+    {
+        *horasTrabajadas=this->horasTrabajadas;
+    }
+    return 0;
+}
+
+int employee_setEdad(Employee* this,int edad)
+{
+    if(this!=NULL)
+    {
+        this->edad=edad;
+    }
+    return 0;
+}
+
+int employee_getEdad(Employee* this,int* edad)
+{
+    if(this!=NULL)
+    {
+        *edad=this->edad;
+    }
+    return 0;
+}
+
+int employee_setSueldo(Employee* this,int sueldo)
+{
+    if(this!=NULL)
+    {
+        this->sueldo=sueldo;
+    }
+    return 0;
+}
+
+int employee_getSueldo(Employee* this,int* sueldo)
+{
+    if(this!=NULL)
+    {
+        *sueldo=this->sueldo;
+    }
+    return 0;
+}
+
+int employee_IngresarDatos(Employee* this,int opcion,char* mensaje)
+{
+    char ingreso[128];
+
+    puts(mensaje);
+    fflush(stdin);
+    switch(opcion)
+    {
+    case 1:
+        scanf("%s",ingreso);
+
+        ingreso[0]=toupper(ingreso[0]);
+
+        employee_setNombre(this, ingreso);
+
+        break;
+    case 2:
+        scanf("%s",ingreso);
+        while(employee_checkStr(ingreso)==0)
+        {
+            printf("ERROR:");
+            scanf("%s",ingreso);
+        }
+        employee_setHorasTrabajadas(this,atoi(ingreso));
+        break;
+    case 3:
+        scanf("%s",ingreso);
+        while(employee_checkStr(ingreso)==0)
+        {
+            printf("ERROR:");
+            scanf("%s",ingreso);
+        }
+        employee_setEdad(this,atoi(ingreso));
+        break;
+    default:
+        printf("\n\nError modificacion\n");
+        system("pause");
+
+        break;
+    }
+    return 0;
+}
+
+
+
+int employee_checkStr(char* ingreso)
+{
+    int i;
+    int flag=1;
+    int len;
+    len=strlen(ingreso);
+    for(i=0;i<len;i++)
+    {
+        if(ingreso[i]=='\0')
+        {
+
+            break;
+
+        }else{
+            if(isdigit(ingreso[i])==0)
+            {
+                //printf("%d",flag);
+                flag=isdigit(ingreso[i]);
+                break;
+            }
+        }
+
+    }
+    return flag;
+}
+
+int employee_chooseMod(Employee* this, char* mensaje)
+{
+    char mensajeMod[3][30]={"\nIngrese nombre:","\nIngrese Horas trabajadas:","\nIngrese salario:"};
+    int opcion;
+
+    puts(mensaje);
+    scanf("%d",&opcion);
+
+    system("cls");
+    if(opcion>0&&opcion<3)
+    {
+        employee_IngresarDatos(this,opcion,mensajeMod[opcion-1]);
+    }else
+    {
+        employee_IngresarDatos(this,-1," ");
+    }
+
+
+    return 1;
+}
+
+int employee_list(Employee* this)
+{
+    char auxNombre[50];
+    char auxEmpleado[50];
+    int auxId;
+    int auxEdad;
+    int auxHorasTrabajadas;
+
+    employee_getId(this, &auxId);
+    employee_getHorasTrabajadas(this, &auxHorasTrabajadas);
+    employee_getEdad(this, &auxEdad);
+    employee_getEmpleo(this, auxEmpleado);
+    employee_getNombre(this, auxNombre);
+    printf("%5d %20s %20s %16d %5d\n",auxId,auxNombre,auxEmpleado,auxEdad,auxHorasTrabajadas);
+
+    return 1;
+}
+
+int employee_listSalary(Employee* this)
+{
+    char auxNombre[50];
+    char auxEmpleado[50];
+    int auxId;
+    int auxEdad;
+    int auxHorasTrabajadas;
+    int auxSueldo;
+
+    employee_getId(this, &auxId);
+    employee_getHorasTrabajadas(this, &auxHorasTrabajadas);
+    employee_getEdad(this, &auxEdad);
+    employee_getEmpleo(this, auxEmpleado);
+    employee_getNombre(this, auxNombre);
+    employee_getSueldo(this,&auxSueldo);
+
+    printf("%5d %20s %20s %16d %7d %5d\n",auxId,auxNombre,auxEmpleado,auxEdad,auxSueldo,auxHorasTrabajadas);
+
+    return 1;
+}
+
+int employee_compareByName(void *e1, void *e2)
+{
+    Employee* aux1=e1;
+    Employee* aux2=e2;
+    return strcmp(aux1->nombre,aux2->nombre);
+}
+
+int laQueMapea(void* aux)
+{
+    Employee* empleado=aux;
+    int horas;
+    int returnaux=0;
+
+    if(empleado!=NULL)
+    {
+        returnaux=1;
+        employee_getHorasTrabajadas(empleado,&horas);
+        employee_setSueldo(empleado,horas*SUELDO);
+    }
+
+    return returnaux;
+}
+int laQuefiltra(void* aux)
+{
+    Employee* empleado=aux;
+    int edad;
+    int returnaux=-1;
+    char auxget[50];
+
+    if(empleado!=NULL)
+    {
+        employee_getEdad(empleado,&edad);
+        if(edad>19)
+        {
+            returnaux=stricmp("Programador",auxget);
+            employee_getEmpleo(empleado,auxget);
+        }
+
+
+    }
+
+    return returnaux;
+}

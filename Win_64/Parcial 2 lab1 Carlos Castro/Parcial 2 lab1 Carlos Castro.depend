@@ -1,0 +1,45 @@
+# depslib dependency file v1.0
+1561398880 source:d:\carlos castro\parcial 2 lab1 carlos castro\controller.c
+	<stdio.h>
+	<stdlib.h>
+	"LinkedList.h"
+	"Employee.h"
+	"parser.h"
+
+1561399046 d:\carlos castro\parcial 2 lab1 carlos castro\linkedlist.h
+
+1561398778 d:\carlos castro\parcial 2 lab1 carlos castro\employee.h
+
+1561390373 d:\carlos castro\parcial 2 lab1 carlos castro\parser.h
+
+1561399071 source:d:\carlos castro\parcial 2 lab1 carlos castro\employee.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	<ctype.h>
+	"Employee.h"
+	"LinkedList.h"
+
+1561399122 source:d:\carlos castro\parcial 2 lab1 carlos castro\linkedlist.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"LinkedList.h"
+
+1561397237 source:d:\carlos castro\parcial 2 lab1 carlos castro\main.c
+	<stdio.h>
+	<stdlib.h>
+	<string.h>
+	"LinkedList.h"
+	"Controller.h"
+	"Employee.h"
+
+1561397237 d:\carlos castro\parcial 2 lab1 carlos castro\controller.h
+
+1561391279 source:d:\carlos castro\parcial 2 lab1 carlos castro\parser.c
+	<stdio.h>
+	<stdlib.h>
+	"LinkedList.h"
+	"Employee.h"
+	"parser.h"
+
